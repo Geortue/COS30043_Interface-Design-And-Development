@@ -4,7 +4,7 @@ body {
 }
 
 img {
-    max-width: 90%;
+  max-width: 90%;
 }
 
 .nav-link:hover {
@@ -32,9 +32,11 @@ h2 {
 .why_choose_us_item {
   background: #fff;
   border-radius: 10px;
+  border-width: 2px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   padding: 10px;
+  margin-block: 10px;
   transition: transform 0.3s ease;
 }
 
