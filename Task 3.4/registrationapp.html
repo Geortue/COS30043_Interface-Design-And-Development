@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task 3.4</title>
+    <link href="../framework/css/bootstrap.css" rel="stylesheet" />
+    <script src="../framework/js/vue.min.js"></script>
+  </head>
+  <body>
+    <h1>Registration App: Cloud Service</h1>
+    <div id="app" class="container mt-5">
+      <form @submit.prevent="submitForm">
+        <fieldset>
+          <h3>Login Information</h3>
+          <div class="mb-3">
+            <label for="username">Enter username: </label>
+            <input
+              type="text"
+              id="username"
+              v-model="username"
+              placeholder="Enter your username"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password">Enter password: </label>
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              placeholder="Enter your password"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="confirmPassword">Re-enter password: </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              v-model="confirmPassword"
+              placeholder="Re-enter your password"
+              class="form-control"
+              required
+            />
+            <div class="text-danger" v-if="passwordMismatch">
+              Passwords do not match!
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="row">
+            <h3>Phone Information</h3>
+            <div class="col-md-6">
+              <h4>Operating System</h4>
+              <div class="form-check">
+                <input
+                  type="radio"
+                  id="Android"
+                  v-model="osFilter"
+                  value="Android"
+                  class="form-check-input"
+                />
+                <label for="Android" class="form-check-label">Android</label>
+              </div>
+              <div class="form-check">
+                <input
+                  type="radio"
+                  id="IOS"
+                  v-model="osFilter"
+                  value="IOS"
+                  class="form-check-input"
+                />
+                <label for="IOS" class="form-check-label">IOS</label>
+              </div>
+              <div class="form-check">
+                <input
+                  type="radio"
+                  id="Windows"
+                  v-model="osFilter"
+                  value="Windows"
+                  class="form-check-input"
+                />
+                <label for="Windows" class="form-check-label">Windows</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h4>Model</h4>
+              <label for="phoneModel" class="form-label"
+                >Select phone model:</label
+              >
+              <select
+                id="phoneModel"
+                v-model="phoneModel"
+                class="form-select"
+                required
+              >
+                <option
+                  v-for="model in filteredPhoneModels"
+                  :key="model.model"
+                  :value="model.model"
+                >
+                  {{ model.model }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+        <button type="submit" class="btn btn-primary mt-3">Register</button>
+      </form>
+      <div id="registrationSummary" class="mt-3" v-if="registrationSummary">
+        <h3>Summary</h3>
+        <p><strong>Username:</strong> {{ summary.username }}</p>
+        <p><strong>OS:</strong> {{ summary.os }}</p>
+        <p><strong>Phone:</strong> {{ summary.model }}</p>
+      </div>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            username: "",
+            password: "",
+            confirmPassword: "",
+            osFilter: "Android",
+            phoneModel: "",
+            phoneModels: [
+              { model: "HTC 10", os: "Android" },
+              { model: "Nokia 6", os: "Android" },
+              { model: "Samsung Galaxy 20 Ultra", os: "Android" },
+              { model: "IDD VIOS Non Windows", os: "Android" },
+              { model: "iPhone X", os: "IOS" },
+              { model: "iPhone Xs Max", os: "IOS" },
+              { model: "iPhone 11 Pro Max", os: "IOS" },
+              { model: "IDD Windows Non Android", os: "IOS" },
+              { model: "HP Elite x3", os: "Windows" },
+              { model: "Microsoft 950", os: "Windows" },
+              { model: "Microsoft 950XL", os: "Windows" },
+              { model: "IDD VIOS Non Android", os: "Windows" },
+            ],
+            summary: null,
+          };
+        },
+        computed: {
+          filteredPhoneModels() {
+            if (this.osFilter === "All") {
+              return this.phoneModels;
+            }
+            return this.phoneModels.filter(
+              (model) => model.os === this.osFilter
+            );
+          },
+          passwordMismatch() {
+            return (
+              this.password &&
+              this.confirmPassword &&
+              this.password !== this.confirmPassword
+            );
+          },
+          registrationSummary() {
+            return this.summary !== null;
+          },
+        },
+        methods: {
+          submitForm() {
+            if (this.passwordMismatch) {
+              alert("Passwords do not match!");
+              return;
+            }
+            this.summary = {
+              username: this.username,
+              os: this.osFilter,
+              model: this.phoneModel,
+            };
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

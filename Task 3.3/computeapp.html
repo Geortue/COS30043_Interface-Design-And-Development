@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task 3.3</title>
+    <link href="../framework/css/bootstrap.css" rel="stylesheet" />
+    <script src="../framework/js/vue.min.js"></script>
+  </head>
+  <style></style>
+  <body>
+    <h1>Compute App</h1>
+    <div id="app" class="container mt-5">
+      <div class="container-fluid">
+        <form>
+          <div id="weight" class="mb-3">
+            <label for="weightInput">Enter weight in kilograms: </label>
+            <input
+              type="number"
+              id="weightInput"
+              v-model="weight"
+              placeholder="E.g: 70.5..."
+            />
+          </div>
+          <div id="height" class="mb-3">
+            <label for="heightInput">Enter height in centimeters: </label>
+            <input
+              type="number"
+              id="heightInput"
+              v-model="height"
+              placeholder="E.g: 175..."
+            />
+          </div>
+        </form>
+        <div class="mb-3">
+          <p>Computed BMI is: {{ bmi }} - {{ message }}</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            weight: 0,
+            height: 0,
+          };
+        },
+        computed: {
+          bmi() {
+            if (this.weight > 0 && this.height > 0) {
+              const heightInMeters = this.height / 100;
+              return (this.weight / (heightInMeters * heightInMeters)).toFixed(
+                2
+              );
+            } else {
+              return 0;
+            }
+          },
+          message() {
+            if (this.bmi < 18.5 && this.bmi > 0) {
+              return "Underweight";
+            } else if (this.bmi >= 18.5 && this.bmi < 25) {
+              return "Normal weight";
+            } else if (this.bmi >= 25 && this.bmi < 30) {
+              return "Overweight";
+            } else if (this.bmi >= 30) {
+              return "Obese";
+            } else {
+              return "Please enter valid weight and height.";
+            }
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

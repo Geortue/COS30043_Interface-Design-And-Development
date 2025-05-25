@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task 4.1</title>
+    <link href="../framework/css/bootstrap.css" rel="stylesheet" />
+    <script src="../framework/js/vue.min.js"></script>
+  </head>
+  <body>
+    <div id="app" class="container mt-5">
+      <h1>Number Guessing Game</h1>
+      <p>
+        <label for="guess">Guess a number between 1 and 100:</label>
+        <input
+          type="number"
+          id="guess"
+          v-model="guess"
+          placeholder="Enter your guess"
+          required
+        />
+      </p>
+      <div id="button-container" class="mb-3">
+        <button class="btn btn-primary" @click="checkUserGuess">
+          Check Guess
+        </button>
+        <button class="btn btn-dark" @click="endGame">Give Up</button>
+        <button class="btn btn-success" @click="resetGame">Start Over</button>
+      </div>
+      <p class="mt-3">{{message}}</p>
+    </div>
+  </body>
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          guess: null,
+          number: 0,
+          message: "Start guessing",
+        };
+      },
+      methods: {
+        generateRandomNumber() {
+          this.number = Math.floor(Math.random() * 100) + 1;
+        },
+
+        checkUserGuess() {
+          if (this.guess > 1 && this.guess < 100) {
+            if (this.guess === this.number) {
+              this.message = "Congratulations! You guessed the number!";
+            } else {
+              this.message =
+                this.guess < this.number ? "Try higher!" : "Try lower!";
+            }
+          } else {
+            this.message = "Please enter a valid number between 1 and 100.";
+          }
+        },
+
+        endGame() {
+          this.message = `The number was ${this.number}.`;
+          this.guess = null;
+        },
+
+        resetGame() {
+          this.guess = null;
+          this.message = "Start guessing!";
+          this.generateRandomNumber();
+        },
+      },
+      mounted() {
+        this.generateRandomNumber();
+      },
+    }).mount("#app");
+  </script>
+</html>
