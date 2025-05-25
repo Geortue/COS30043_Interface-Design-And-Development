@@ -6,6 +6,7 @@ import reviews from "./modules/reviews";
 import enrolments from "./modules/enrolments";
 import unit from "./modules/unit";
 import likes from "./modules/likes";
+import progress from "./modules/progress";
 
 export default createStore({
   modules: {
@@ -16,5 +17,6 @@ export default createStore({
     enrolments,
     unit,
     likes,
+    progress,
   },
 });

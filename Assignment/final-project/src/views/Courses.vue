@@ -92,6 +92,9 @@
               >
                 Enrolled
               </span>
+              <span v-if="isCompleted(course.id)" class="badge bg-info me-2"
+                >Completed</span
+              >
             </div>
           </BaseCard>
         </div>
@@ -160,7 +163,7 @@ export default {
   computed: {
     ...mapGetters("courses", ["allCourses"]),
     ...mapGetters("auth", ["user", "users"]),
-    ...mapGetters("enrolments", ["enrolledCourses"]),
+    ...mapGetters("enrolments", ["enrolledCourses", "completedCourses"]),
     ...mapGetters("likes", ["isCourseLiked"]),
 
     uniqueCategories() {
@@ -209,6 +212,12 @@ export default {
       return instructor
         ? `${instructor.first_name} ${instructor.last_name}`
         : "Unknown";
+    },
+    isCompleted(courseId) {
+      return (
+        Array.isArray(this.completedCourses) &&
+        this.completedCourses.some((e) => e.course_id == courseId)
+      );
     },
     isEnrolled(courseId) {
       return Array.isArray(this.enrolledCourses)

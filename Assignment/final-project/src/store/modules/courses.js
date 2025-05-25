@@ -18,7 +18,6 @@ export const mutations = {
   deleteCourse(state, id) {
     state.courses = state.courses.filter((c) => c.id !== id);
   },
-  // ADD THIS MUTATION
   updateCourseLikes(state, { courseId, likes }) {
     const course = state.courses.find((c) => c.id == courseId);
     if (course) {
@@ -60,8 +59,7 @@ export const actions = {
         likes,
       });
     } catch (error) {
-      console.error("Failed to update likes on the server:", error);
-      // Optionally, you could add logic here to revert the change on failure.
+      throw error;
     }
   },
 };

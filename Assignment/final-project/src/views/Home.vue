@@ -54,10 +54,20 @@
                 <h5>{{ course.title }}</h5>
                 <p>{{ course.description }}</p>
                 <router-link
+                  v-if="user"
+                  class="btn btn-sm btn-outline-info me-2"
                   :to="`/courses/${course.id}`"
-                  class="btn btn-sm btn-outline-primary"
-                  >View</router-link
                 >
+                  View Details
+                </router-link>
+
+                <button
+                  v-else
+                  class="btn btn-sm btn-outline-info me-2"
+                  @click="showLoginPrompt"
+                >
+                  View Details
+                </button>
               </BaseCard>
             </div>
           </div>
@@ -86,16 +96,48 @@
       </footer>
     </div>
   </div>
+
+  <!-- Login modal -->
+  <div
+    class="modal fade"
+    id="loginPrompt"
+    tabindex="-1"
+    ref="loginPrompt"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center p-4">
+        <button
+          type="button"
+          class="btn-close ms-auto"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+        <div class="modal-body">
+          <h5>Please log in to view course details</h5>
+          <button
+            type="button"
+            class="btn btn-primary mt-3"
+            @click="goToLoginAndCloseModal"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import BaseCard from "../components/BaseCard.vue";
 import { mapGetters, mapActions } from "vuex";
+import * as bootstrap from "bootstrap";
 
 export default {
   name: "Home",
   components: { BaseCard },
   computed: {
+    ...mapGetters("auth", ["user"]),
     ...mapGetters("courses", ["allCourses"]),
     ...mapGetters("news", ["allNews"]),
     featuredCourses() {
@@ -108,6 +150,24 @@ export default {
   methods: {
     ...mapActions("courses", ["fetchCourses"]),
     ...mapActions("news", ["fetchNews"]),
+
+    showLoginPrompt() {
+      const modalElement = this.$refs.loginPrompt;
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+    },
+    goToLoginAndCloseModal() {
+      const modalElement = this.$refs.loginPrompt;
+      if (modalElement) {
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) {
+          modal.hide();
+        }
+      }
+      this.$router.push("/auth");
+    },
   },
   mounted() {
     this.fetchCourses();

@@ -1,14 +1,15 @@
 <template>
-  <div id="app">
+  <v-app>
     <NavBar />
-    <main class="pt-5 mt-4">
+    <v-main class="pt-5 mt-4">
       <router-view />
-    </main>
-  </div>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 import NavBar from "./components/NavBar.vue";
+
 export default {
   name: "App",
   components: {
@@ -20,6 +21,8 @@ export default {
 <style>
 body {
   background: linear-gradient(to right, #f4f8ff, #ecfdf5);
+  font-family: "Roboto", sans-serif;
+  margin: 0;
 }
 
 .btn-gradient {
@@ -33,7 +36,7 @@ body {
   background: linear-gradient(to right, #5d63d4, #a4a9ff);
 }
 
-main {
+v-main {
   padding-top: 80px;
 }
 </style>
